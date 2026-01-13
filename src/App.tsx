@@ -6,6 +6,7 @@ import { OverviewDashboard } from '@/components/OverviewDashboard'
 import { ResourcesView } from '@/components/ResourcesView'
 import { CostAnalytics } from '@/components/CostAnalytics'
 import { CloudProviderSelector } from '@/components/CloudProviderSelector'
+import { API_URL } from '@/config'
 
 function App() {
   const [selectedProviders, setSelectedProviders] = useState<string[]>(['aws', 'azure', 'gcp'])
@@ -19,7 +20,7 @@ function App() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/dashboard', {
+      const response = await fetch(`${API_URL}/api/dashboard`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ providers: selectedProviders }),
@@ -28,6 +29,7 @@ function App() {
       setDashboardData(data)
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
+      console.error('API URL:', API_URL)
     } finally {
       setLoading(false)
     }
