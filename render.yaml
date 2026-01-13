@@ -3,7 +3,7 @@ services:
     name: multi-cloud-dashboard-api
     env: node
     region: oregon
-    buildCommand: npm install
+    buildCommand: npm install --legacy-peer-deps
     startCommand: node server/index.js
     healthCheckPath: /api/health
     envVars:
@@ -16,6 +16,8 @@ services:
       - key: SESSION_SECRET
         generateValue: true
       - key: ALLOWED_ORIGINS
-        value: https://multi-cloud-dashboard.netlify.app
+        value: https://your-netlify-site.netlify.app
       - key: AUTH_METHOD
         value: iam-role
+      - key: AWS_REGION
+        value: us-east-1
