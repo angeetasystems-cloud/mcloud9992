@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: multi-cloud-dashboard-api
+    env: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: node server/index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://multi-cloud-dashboard.netlify.app
+      - key: AUTH_METHOD
+        value: iam-role
