@@ -15,23 +15,33 @@ export function Login({ onLogin }: { onLogin: (token: string, user: any) => void
     setLoading(true)
 
     try {
+      console.log('API_URL:', API_URL)
+      console.log('Login URL:', `${API_URL}/api/users/login`)
+      
       const response = await fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       })
 
-      const data = await response.json()
+      console.log('Response status:', response.status)
+      console.log('Response headers:', response.headers)
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed')
+        const text = await response.text()
+        console.error('Error response:', text)
+        throw new Error(`Login failed: ${response.status}`)
       }
+
+      const data = await response.json()
+      console.log('Login successful:', data)
 
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
       onLogin(data.token, data.user)
     } catch (err: any) {
-      setError(err.message || 'Failed to login. Please check your credentials.')
+      console.error('Login error:', err)
+      setError(err.message || 'Failed to login. Please check your credentials and ensure the backend is running.')
     } finally {
       setLoading(false)
     }
